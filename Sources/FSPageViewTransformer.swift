@@ -19,6 +19,7 @@ public enum FSPagerViewTransformerType: Int {
     case ferrisWheel
     case invertedFerrisWheel
     case cubic
+    case imbuff // 自定义
 }
 
 open class FSPagerViewTransformer: NSObject {
@@ -37,6 +38,8 @@ open class FSPagerViewTransformer: NSObject {
             self.minimumScale = 0.85
         case .depth:
             self.minimumScale = 0.5
+        case .imbuff:
+            self.minimumScale = 0.85
         default:
             break
         }
@@ -147,7 +150,7 @@ open class FSPagerViewTransformer: NSObject {
             attributes.alpha = alpha
             attributes.transform = transform
             attributes.zIndex = zIndex
-        case .overlap,.linear:
+        case .overlap, .linear, .imbuff:
             guard scrollDirection == .horizontal else {
                 // This type doesn't support vertical mode
                 return
@@ -263,6 +266,11 @@ open class FSPagerViewTransformer: NSObject {
             return -pagerView.itemSize.width * 0.15
         case .cubic:
             return 0
+        case .imbuff:
+            guard scrollDirection == .horizontal else {
+                return 0
+            }
+            return 2
         default:
             break
         }
